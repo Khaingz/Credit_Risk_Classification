@@ -44,10 +44,15 @@ Open the starter code notebook and then use it to complete the following steps.
 
 ### Import the modules
 import numpy as np
+
 import pandas as pd
+
 from pathlib import Path
+
 from sklearn.metrics import balanced_accuracy_score
+
 from sklearn.metrics import confusion_matrix
+
 from imblearn.metrics import classification_report_imbalanced
 
 import warnings
@@ -209,7 +214,7 @@ Using bulleted lists, describe the balanced accuracy scores and the precision an
     - "1" Precision : 85%
     - "1" Recall    : 91%
     
-Model 1 Calssification reoprt as follows: 
+Model 1 Calssification reoprt as follows: ![](image/https://github.com/Khaingz/Credit_Risk_Classification/blob/main/Model-1.png)
 
 
 
@@ -220,7 +225,7 @@ Model 1 Calssification reoprt as follows:
     - "1" Precision : 84%
     - "1" Recall    : 99%
  
-Model 1 Calssification reoprt as follows:
+Model 1 Calssification reoprt as follows: ![](image/https://github.com/Khaingz/Credit_Risk_Classification/blob/main/Model-2.png)
 
 
 
