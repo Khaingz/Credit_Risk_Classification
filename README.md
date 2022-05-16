@@ -42,51 +42,136 @@ This project used JupyterLab and used following Anaconda packages:
 - Split the Data into Training and Testing Sets
 Open the starter code notebook and then use it to complete the following steps.
 
-Read the lending_data.csv data from the Resources folder into a Pandas DataFrame.
+### Import the modules
+import numpy as np
+import pandas as pd
+from pathlib import Path
+from sklearn.metrics import balanced_accuracy_score
+from sklearn.metrics import confusion_matrix
+from imblearn.metrics import classification_report_imbalanced
 
-Create the labels set (y) from the “loan_status” column, and then create the features (X) DataFrame from the remaining columns.
+import warnings
+warnings.filterwarnings('ignore')
 
-Note A value of 0 in the “loan_status” column means that the loan is healthy. A value of 1 means that the loan has a high risk of defaulting.
+### Read the lending_data.csv data from the Resources folder into a Pandas DataFrame.
+lending_df = pd.read_csv(
+    Path('./Resources/lending_data.csv'))
+    
+### Review the DataFrame
+lending_df
 
-Check the balance of the labels variable (y) by using the value_counts function.
+### Create the labels set (y) from the “loan_status” column, and then create the features (X) DataFrame from the remaining columns.
+### Separate the y variable, the labels
+y = lending_df["loan_status"]
 
-Split the data into training and testing datasets by using train_test_split.
+### Separate the X variable, the features
+X = lending_df.drop(columns="loan_status")
+
+### Review the y variable Series
+y.head()
+
+### Review the X variable DataFrame
+X.head()
+
+### Note A value of 0 in the “loan_status” column means that the loan is healthy. A value of 1 means that the loan has a high risk of defaulting.
+### Check the balance of the labels variable (y) by using the value_counts function.
+lending_df["loan_status"].value_counts()
+
+### Split the data into training and testing datasets by using train_test_split.
+### Import the train_test_learn module
+from sklearn.model_selection import train_test_split
+
+### Split the data using train_test_split
+### Assign a random_state of 1 to the function
+X_train, X_test, y_train, y_test = train_test_split(X,y, random_state=1)
 
 - Create a Logistic Regression Model with the Original Data
 Employ your knowledge of logistic regression to complete the following steps:
 
-Fit a logistic regression model by using the training data (X_train and y_train).
+### Fit a logistic regression model by using the training data (X_train and y_train).
+### Import the LogisticRegression module from SKLearn
+from sklearn.linear_model import LogisticRegression
 
-Save the predictions on the testing data labels by using the testing feature data (X_test) and the fitted model.
+### Instantiate the Logistic Regression model
+### Assign a random_state parameter of 1 to the model
+logistic_regression_model = LogisticRegression(random_state=1)
 
-Evaluate the model’s performance by doing the following:
+### Fit the model using training data
+lr_model = logistic_regression_model.fit(X_train,y_train)
 
-Calculate the accuracy score of the model.
+### Save the predictions on the testing data labels by using the testing feature data (X_test) and the fitted model.
+### Make a prediction using the testing data
+test_data = lr_model.predict(X_test)
 
-Generate a confusion matrix.
+### Evaluate the model’s performance by doing the following:
+### Calculate the accuracy score of the model.
+### Print the balanced_accuracy score of the model
+balanced_accuracy_score(y_test, test_data)
 
-Print the classification report.
+### Generate a confusion matrix for the model
+confusion_matrix(y_test, test_data)
 
-Answer the following question: How well does the logistic regression model predict both the 0 (healthy loan) and 1 (high-risk loan) labels?
+### Print the classification report for the model
+print(classification_report_imbalanced(y_test, test_data))
+
+Answer the following question:
+Question: How well does the logistic regression model predict both the 0 (healthy loan) and 1 (high-risk loan) labels?
+
+Answer: The logistic regression model well fit the original data and also does well predict both the 0 (healthy loan) and 1 (high-risk loan) labels.
+
+For the 0 (healthy loan) predictions, there is a 100% precision and 99% recall. For the 1 (high-risk loan) predictions, there is a 85% precison and 91% recall.
 
 - Predict a Logistic Regression Model with Resampled Training Data
 Did you notice the small number of high-risk loan labels? Perhaps, a model that uses resampled data will perform better. You’ll thus resample the training data and then reevaluate the model. Specifically, you’ll use RandomOverSampler.
 
 To do so, complete the following steps:
 
-Use the RandomOverSampler module from the imbalanced-learn library to resample the data. Be sure to confirm that the labels have an equal number of data points.
+### Use the RandomOverSampler module from the imbalanced-learn library to resample the data. Be sure to confirm that the labels have an equal number of data points.
+### Import the RandomOverSampler module form imbalanced-learn
+from imblearn.over_sampling import RandomOverSampler
 
-Use the LogisticRegression classifier and the resampled data to fit the model and make predictions.
+### Instantiate the random oversampler model
+### Assign a random_state parameter of 1 to the model
+random_oversampler = RandomOverSampler(random_state=1)
 
-Evaluate the model’s performance by doing the following:
+### Fit the original training data to the random_oversampler model
+X_resampled, y_resampled = random_oversampler.fit_resample(X_train, y_train)
 
-Calculate the accuracy score of the model.
+### Count the distinct values of the resampled labels data
+y_resampled.value_counts()
 
-Generate a confusion matrix.
+### Use the LogisticRegression classifier and the resampled data to fit the model and make predictions.
+### Instantiate the Logistic Regression model
+### Assign a random_state parameter of 1 to the model
+model = LogisticRegression(random_state=1)
 
-Print the classification report.
+### Fit the model using the resampled training data
+lr_resampled = model.fit(X_resampled, y_resampled)
 
-Answer the following question: How well does the logistic regression model, fit with oversampled data, predict both the 0 (healthy loan) and 1 (high-risk loan) labels?
+### Make a prediction using the testing data
+lr_prediction = lr_resampled.predict(X_test)
+
+### Evaluate the model’s performance by doing the following:
+### Calculate the accuracy score of the model.
+### Print the balanced_accuracy score of the model 
+print(balanced_accuracy_score(y_test,lr_prediction))
+
+### Generate a confusion matrix for the model
+confusion_matrix(y_test,lr_prediction)
+
+### Print the classification report for the model
+print(classification_report_imbalanced(y_test, lr_prediction))
+
+Answer the following question: 
+Question: How well does the logistic regression model, fit with oversampled data, predict both the 0 (healthy loan) and 1 (high-risk loan) labels?
+
+Answer: The logistic regression model well fit the oversampled data and well predict both the 0 (healthy loan) and 1 (high-risk loan).
+
+For the 0 (healthy loan) predictions, there is a 100% precision and 99% recall.
+
+For the 1 (high-risk loan) predictions, there is a 84% precison and 99% recall.
+
+When comparing oversampled data and original data, it seems like we lose 1% in 1 (high-risk loan) predictions, but we gain 8% in recall. And we can see that the data are classified and predict the high-risk loan more correctly when using the oversampled data.
 
 # Credit Risk Analysis Report
 
@@ -145,4 +230,3 @@ Model 1 Calssification reoprt as follows:
 When comparing the regaression model, fit with oversampled data and original data, we saw it was gained about 4% in balanced accuracy. Although accuracy is increased, it is moportant to look into recall and precision because accuracy does not always tell the full story. Although we lose 1% in 1 (high-risk loan) predictions, but we gain 8% in recall. And we can see that the data are classified and predict the high-risk loan more correctly when using the oversampled data.
 
 In machine learning model 2, we can see the balanced accuracy score percentage is increased 4.2% . Also the second model is the best fit for this application as it does a better job to classified overall "1" values correctly which is measured by recall. This information could be very beneficial to the firm to make sure that high-risk loans are managed correctly.
-
