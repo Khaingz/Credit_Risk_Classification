@@ -217,7 +217,7 @@ Using bulleted lists, describe the balanced accuracy scores and the precision an
     - "1" Recall    : 91%
     
 Model 1 Calssification reoprt as follows: 
-![](image/https://github.com/Khaingz/Credit_Risk_Classification/blob/main/Model-1.png)
+![alt text](https://github.com/Khaingz/Credit_Risk_Classification/blob/main/Model-1.png)
 
 - Machine Learning Model 2 :
     - Balanced Accuracy scores : 99.4%
@@ -227,7 +227,7 @@ Model 1 Calssification reoprt as follows:
     - "1" Recall    : 99%
  
 Model 1 Calssification reoprt as follows: 
-![](image/https://github.com/Khaingz/Credit_Risk_Classification/blob/main/Model-2.png)
+![alt text](https://github.com/Khaingz/Credit_Risk_Classification/blob/main/Model-2.png)
 
 
 ## Summary
